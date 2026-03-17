@@ -176,135 +176,45 @@ export default function ScoreEditor() {
         `}</style>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative">
-          {/* Controls Panel */}
-          {!isFullPreview && (
-            <div className="lg:col-span-1 space-y-6 print:hidden order-last lg:order-first">
-            {/* Basic Info */}
-            <section className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm">
-              <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-4">基本情報</h2>
-              <div className="space-y-4">
+          {/* 1. Basic Info (Mobile: 1st, PC: Left Top) */}
+          <section className="lg:col-span-1 bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm order-1">
+            <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-4">基本情報</h2>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-zinc-500 mb-1">曲名</label>
+                <input 
+                  type="text" 
+                  value={title} 
+                  onChange={e => setTitle(e.target.value)}
+                  className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-2 text-zinc-900 dark:text-zinc-100 outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-zinc-500 mb-1">曲名</label>
+                  <label className="block text-xs font-bold text-zinc-500 mb-1">Key</label>
                   <input 
                     type="text" 
-                    value={title} 
-                    onChange={e => setTitle(e.target.value)}
+                    value={key} 
+                    onChange={e => setKey(e.target.value)}
+                    placeholder="C, Eb, F..."
                     className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-2 text-zinc-900 dark:text-zinc-100 outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-bold text-zinc-500 mb-1">Key</label>
-                    <input 
-                      type="text" 
-                      value={key} 
-                      onChange={e => setKey(e.target.value)}
-                      placeholder="C, Eb, F..."
-                      className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-2 text-zinc-900 dark:text-zinc-100 outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-zinc-500 mb-1">作曲者</label>
-                    <input 
-                      type="text" 
-                      value={composer} 
-                      onChange={e => setComposer(e.target.value)}
-                      className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-2 text-zinc-900 dark:text-zinc-100 outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-xs font-bold text-zinc-500 mb-1">作曲者</label>
+                  <input 
+                    type="text" 
+                    value={composer} 
+                    onChange={e => setComposer(e.target.value)}
+                    className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-4 py-2 text-zinc-900 dark:text-zinc-100 outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                  />
                 </div>
               </div>
-            </section>
+            </div>
+          </section>
 
-            {/* Measure List */}
-            <section className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm max-h-[60vh] overflow-y-auto">
-              <div className="flex items-center justify-between mb-4 sticky top-0 bg-white dark:bg-zinc-900 pb-2 z-10">
-                <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-wider">小節リスト</h2>
-                <button 
-                  onClick={addMeasure}
-                  className="p-1.5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
-                >
-                  <Plus className="w-4 h-4" />
-                </button>
-              </div>
-              
-              <div className="space-y-4">
-                {measures.map((m, mIdx) => (
-                  <div key={mIdx} className="p-4 rounded-2xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/50">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-xs font-black text-zinc-300 dark:text-zinc-700">M.{m.number}</span>
-                      <div className="flex items-center gap-1">
-                        <button 
-                          onClick={() => toggleRepeatStart(mIdx)}
-                          className={`text-[10px] px-1.5 py-0.5 rounded border ${m.repeatStart ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 border-indigo-200' : 'text-zinc-400 border-zinc-200 dark:border-zinc-800'}`}
-                        >
-                          ||:
-                        </button>
-                        <button 
-                          onClick={() => toggleRepeatEnd(mIdx)}
-                          className={`text-[10px] px-1.5 py-0.5 rounded border ${m.repeatEnd ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 border-indigo-200' : 'text-zinc-400 border-zinc-200 dark:border-zinc-800'}`}
-                        >
-                          :||
-                        </button>
-                        <button 
-                          onClick={() => toggleVolta(mIdx, '1')}
-                          className={`text-[10px] px-1.5 py-0.5 rounded border ${m.volta === '1' ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-600 border-amber-200' : 'text-zinc-400 border-zinc-200 dark:border-zinc-800'}`}
-                        >
-                          1.
-                        </button>
-                        <button 
-                          onClick={() => toggleVolta(mIdx, '2')}
-                          className={`text-[10px] px-1.5 py-0.5 rounded border ${m.volta === '2' ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-600 border-amber-200' : 'text-zinc-400 border-zinc-200 dark:border-zinc-800'}`}
-                        >
-                          2.
-                        </button>
-                        <button 
-                          onClick={() => removeMeasure(mIdx)}
-                          className="p-1 text-zinc-300 hover:text-red-500 transition-colors ml-2"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-                    
-                    <div className="grid grid-cols-2 gap-2">
-                      {m.chords.map((chord, cIdx) => (
-                        <div key={cIdx} className="relative group">
-                          <input 
-                            type="text" 
-                            value={chord} 
-                            placeholder="Chord..."
-                            onChange={e => updateChord(mIdx, cIdx, e.target.value)}
-                            className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-2 py-1.5 text-sm outline-none focus:ring-1 focus:ring-indigo-500"
-                          />
-                          {m.chords.length > 1 && (
-                            <button 
-                              onClick={() => removeChordFromMeasure(mIdx, cIdx)}
-                              className="absolute -right-1 -top-1 w-4 h-4 bg-zinc-200 dark:bg-zinc-800 rounded-full text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"
-                            >
-                              ×
-                            </button>
-                          )}
-                        </div>
-                      ))}
-                      {m.chords.length < 4 && (
-                        <button 
-                          onClick={() => addChordToMeasure(mIdx)}
-                          className="flex items-center justify-center border border-dashed border-zinc-200 dark:border-zinc-800 rounded-lg py-1 hover:bg-zinc-100 transition-colors"
-                        >
-                          <Plus className="w-3 h-3 text-zinc-400" />
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-          </div>
-          )}
-
-          {/* Preview Panel */}
-          <div className={`${isFullPreview ? 'lg:col-span-3' : 'lg:col-span-2'} space-y-6 transition-all duration-300 order-first lg:order-last`}>
+          {/* 2. Preview Panel (Mobile: 2nd, PC: Right Side) */}
+          <div className={`${isFullPreview ? 'lg:col-span-3' : 'lg:col-span-2 lg:row-span-2'} space-y-6 transition-all duration-300 order-2`}>
             <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm h-auto score-print-only relative group min-h-[400px]">
               <div className="flex items-center justify-between mb-8 print:hidden">
                 <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-wider">Preview</h2>
@@ -338,6 +248,91 @@ export default function ScoreEditor() {
               <p>💡 ヒント: 1小節に多くのコードを入れる場合は、ズームを下げると配置が安定します。保存はブラウザのLocalStorageに自動で行われます。</p>
             </div>
           </div>
+
+          {/* 3. Measure List (Mobile: 3rd, PC: Left Bottom) */}
+          <section className="lg:col-span-1 bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm max-h-[60vh] overflow-y-auto order-3 print:hidden">
+            <div className="flex items-center justify-between mb-4 sticky top-0 bg-white dark:bg-zinc-900 pb-2 z-10">
+              <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-wider">小節リスト</h2>
+              <button 
+                onClick={addMeasure}
+                className="p-1.5 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
+              >
+                <Plus className="w-4 h-4" />
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              {measures.map((m, mIdx) => (
+                <div key={mIdx} className="p-4 rounded-2xl border border-zinc-100 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/50">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-black text-zinc-300 dark:text-zinc-700">M.{m.number}</span>
+                    <div className="flex items-center gap-1">
+                      <button 
+                        onClick={() => toggleRepeatStart(mIdx)}
+                        className={`text-[10px] px-1.5 py-0.5 rounded border ${m.repeatStart ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 border-indigo-200' : 'text-zinc-400 border-zinc-200 dark:border-zinc-800'}`}
+                      >
+                        ||:
+                      </button>
+                      <button 
+                        onClick={() => toggleRepeatEnd(mIdx)}
+                        className={`text-[10px] px-1.5 py-0.5 rounded border ${m.repeatEnd ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 border-indigo-200' : 'text-zinc-400 border-zinc-200 dark:border-zinc-800'}`}
+                      >
+                        :||
+                      </button>
+                      <button 
+                        onClick={() => toggleVolta(mIdx, '1')}
+                        className={`text-[10px] px-1.5 py-0.5 rounded border ${m.volta === '1' ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-600 border-amber-200' : 'text-zinc-400 border-zinc-200 dark:border-zinc-800'}`}
+                      >
+                        1.
+                      </button>
+                      <button 
+                        onClick={() => toggleVolta(mIdx, '2')}
+                        className={`text-[10px] px-1.5 py-0.5 rounded border ${m.volta === '2' ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-600 border-amber-200' : 'text-zinc-400 border-zinc-200 dark:border-zinc-800'}`}
+                      >
+                        2.
+                      </button>
+                      <button 
+                        onClick={() => removeMeasure(mIdx)}
+                        className="p-1 text-zinc-300 hover:text-red-500 transition-colors ml-2"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                  
+                  <div className="grid grid-cols-2 gap-2">
+                    {m.chords.map((chord, cIdx) => (
+                      <div key={cIdx} className="relative group">
+                        <input 
+                          type="text" 
+                          value={chord} 
+                          placeholder="Chord..."
+                          onChange={e => updateChord(mIdx, cIdx, e.target.value)}
+                          className="w-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-2 py-1.5 text-sm outline-none focus:ring-1 focus:ring-indigo-500"
+                        />
+                        {m.chords.length > 1 && (
+                          <button 
+                            onClick={() => removeChordFromMeasure(mIdx, cIdx)}
+                            className="absolute -right-1 -top-1 w-4 h-4 bg-zinc-200 dark:bg-zinc-800 rounded-full text-[10px] opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            ×
+                          </button>
+                        )}
+                      </div>
+                    ))}
+                    {m.chords.length < 4 && (
+                      <button 
+                        onClick={() => addChordToMeasure(mIdx)}
+                        className="flex items-center justify-center border border-dashed border-zinc-200 dark:border-zinc-800 rounded-lg py-1 hover:bg-zinc-100 transition-colors"
+                      >
+                        <Plus className="w-3 h-3 text-zinc-400" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
         </div>
       </div>
       

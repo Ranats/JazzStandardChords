@@ -186,7 +186,8 @@ export default function ScoreBoard({ song, density = 'standard', zoom = 1.0, onZ
         const nextVolta = allMeasures[i + 1]?.volta ? Number(allMeasures[i + 1].volta) : 0;
         const prevVolta = i > 0 ? Number(allMeasures[i - 1]?.volta || 0) : 0;
         const voltaType = nextVolta === voltaNum ? (prevVolta === voltaNum ? Volta.type.MID : Volta.type.BEGIN) : (prevVolta === voltaNum ? Volta.type.MID : Volta.type.BEGIN);
-        stave.setVoltaType(voltaType, `${voltaNum}.`, 0);
+        // y_shift = 15 to bring it closer to staff/measure numbers
+        stave.setVoltaType(voltaType, `${voltaNum}.`, 15);
       }
 
       stave.setContext(context).draw();
@@ -196,7 +197,11 @@ export default function ScoreBoard({ song, density = 'standard', zoom = 1.0, onZ
       const lPadX = 8;
       const lPadY = 5;
       const lx = currentX + 5;
-      const ly = stave.getYForTopText(0); // Lowered to be closer to staff
+      
+      // Position for Label (Higher up)
+      const lyLabel = stave.getYForTopText(1.5);
+      // Position for Measure Number (Original, close to staff)
+      const lyMeasure = stave.getYForTopText(0) + 2;
       
       if (measure.label) {
         context.save();
@@ -204,15 +209,16 @@ export default function ScoreBoard({ song, density = 'standard', zoom = 1.0, onZ
         const boxW = lSize + lPadX * 2;
         const boxH = lSize + lPadY * 2;
         const boxX = lx - lPadX;
-        const boxY = ly - lSize - lPadY - 5; // Slight offset for label
+        const boxY = lyLabel - lSize - lPadY - 5;
         
         context.beginPath();
         context.setLineWidth(1.2);
         context.rect(boxX, boxY, boxW, boxH);
+        // Explicitly only stroke to ensure transparency
         context.stroke();
         
         context.setFont('Arial', lSize, 'bold');
-        context.fillText(labelText, lx, ly - lPadY - 4);
+        context.fillText(labelText, lx, lyLabel - lPadY - 4);
         context.restore();
       }
 
@@ -220,7 +226,7 @@ export default function ScoreBoard({ song, density = 'standard', zoom = 1.0, onZ
       context.save();
       context.setFont('Arial', 10, 'normal');
       context.setFillStyle('#888888');
-      context.fillText(String(measure.number), currentX + 3, stave.getYForTopText(0) + 2);
+      context.fillText(String(measure.number), currentX + 3, lyMeasure);
       context.restore();
 
       const notesToDraw: any[] = [];
