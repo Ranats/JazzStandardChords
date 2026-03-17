@@ -56,7 +56,7 @@ export default function SongList({ songs }: { songs: SongEntry[] }) {
             Jazz Standard Chords
           </h1>
           <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
-            スマホで読めるジャズ譜面アプリ — {songs.length}曲収録
+            スマホで読めるジャズ譜面アプリ
           </p>
         </header>
 

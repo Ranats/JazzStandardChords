@@ -5,7 +5,7 @@ export default function AmazonLinks() {
   const books = [
     {
       title: 'Jazz Standard Bible 1 (黒本1)',
-      subtitle: 'セッションの定番、227曲収録',
+      subtitle: 'セッションの定番',
       img: 'https://m.media-amazon.com/images/I/71PLNwLqvIL._SL1500_.jpg',
       url: 'https://amzn.to/4rxZbOF',
       price: '¥3,850',
@@ -13,7 +13,7 @@ export default function AmazonLinks() {
     },
     {
       title: 'Jazz Standard Bible 2 (黒本2)',
-      subtitle: 'さらに広がるスタンダード、227曲収録',
+      subtitle: 'さらに広がるスタンダード',
       img: 'https://m.media-amazon.com/images/I/61IwQHDc5kL._SL1500_.jpg',
       url: 'https://amzn.to/4bt1xsa',
       price: '¥3,850',
