@@ -92,11 +92,9 @@ export default function ScoreBoard({ song, density = 'standard', zoom = 1.0, onZ
     // Logic for measures per line: Reduce when logical width is tight
     const logicalWidth = containerWidth / zoom;
     let measuresPerLine = 4;
-    // Base minimum width for a measure to look decent (including margins)
-    const idealMeasureWidth = 200; 
-
-    if (logicalWidth < 400) measuresPerLine = 1;
-    else if (logicalWidth < 700) measuresPerLine = 2;
+    
+    if (logicalWidth < 300) measuresPerLine = 1;
+    else if (logicalWidth < 500) measuresPerLine = 2;
     else measuresPerLine = 4;
 
     const isMobile = containerWidth < 600;
