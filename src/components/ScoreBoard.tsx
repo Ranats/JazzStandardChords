@@ -213,8 +213,9 @@ export default function ScoreBoard({ song, density = 'standard', zoom = 1.0, onZ
         
         context.beginPath();
         context.setLineWidth(1.2);
+        context.setStrokeStyle('currentColor');
+        context.setFillStyle('transparent'); // Ensure no fill
         context.rect(boxX, boxY, boxW, boxH);
-        // Explicitly only stroke to ensure transparency
         context.stroke();
         
         context.setFont('Arial', lSize, 'bold');
