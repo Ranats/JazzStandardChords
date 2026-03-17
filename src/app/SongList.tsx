@@ -167,9 +167,6 @@ export default function SongList({ songs }: { songs: SongEntry[] }) {
             <Link href="/terms" className="hover:text-indigo-600 transition-colors">利用規約</Link>
             <Link href="/privacy" className="hover:text-indigo-600 transition-colors">プライバシーポリシー</Link>
           </div>
-          <p className="max-w-md mx-auto">
-            楽曲データ出典: <a href="https://chords-scales.online/" target="_blank" rel="noopener noreferrer" className="underline hover:text-indigo-600">Jazz Standard Chords & Scales Online</a>
-          </p>
           <p>© 2026 Jazz Standard Chords. Created for educational purposes.</p>
         </footer>
       </div>
