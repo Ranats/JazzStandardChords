@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ChevronLeft, Plus, Trash2, Download, Save, Music, Eye, Printer } from 'lucide-react';
+import { ChevronLeft, Plus, Trash2, Download, Save, Eye, Printer } from 'lucide-react';
 import ScoreBoard from '@/components/ScoreBoard';
 import { getTones } from '@/lib/chord-utils';
 import { NormalizedSong } from '@/lib/extractor/normalizer';
@@ -16,6 +16,7 @@ interface MeasureData {
 }
 
 export default function ScoreEditor() {
+  const [isMounted, setIsMounted] = useState(false);
   const [title, setTitle] = useState('New Song');
   const [measures, setMeasures] = useState<MeasureData[]>([
     { number: 1, chords: ['Cmaj7'] },
@@ -29,6 +30,7 @@ export default function ScoreEditor() {
 
   // Load from localStorage on mount
   useEffect(() => {
+    setIsMounted(true);
     const saved = localStorage.getItem('jazz-editor-draft');
     if (saved) {
       try {
@@ -37,8 +39,8 @@ export default function ScoreEditor() {
         if (data.title) setTitle(data.title);
         if (data.key) setKey(data.key);
         if (data.composer) setComposer(data.composer);
-      } catch (e) {
-        console.error('Failed to load draft', e);
+      } catch {
+        console.error('Failed to load draft');
       }
     }
   }, []);

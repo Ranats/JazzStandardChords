@@ -24,7 +24,7 @@ export function transposeNote(note: string, semitones: number): string {
   // Standard format from site is usually basic # or b, e.g. C, C#, Db
   
   // Replace HTML entity if present, though parser should handle it
-  let cleanNote = note.replace(/&#35;/g, '#');
+  const cleanNote = note.replace(/&#35;/g, '#');
   
   const index = NOTE_TO_INDEX[cleanNote];
   if (index === undefined) {

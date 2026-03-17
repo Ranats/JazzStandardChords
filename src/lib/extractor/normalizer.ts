@@ -38,12 +38,34 @@ export interface Chord {
   tones: string[];
 }
 
+interface ChordData {
+  Code: string;
+  duration: number;
+  tones?: string[];
+}
+
+interface RawMeasure {
+  section?: string | null;
+  volta?: string | number | null;
+  beats?: number;
+  notes?: string[];
+  chords?: ChordData[];
+  barline_begin?: string;
+  barline_end?: string;
+  repetition?: string;
+  is_coda?: boolean;
+  coda_number?: number;
+  force_line_break?: boolean;
+}
+
 export function normalizeSong(raw: RawSongData): NormalizedSong {
   const sections: Section[] = [];
   let currentSection: Section | null = null;
   let measureCount = 1;
 
-  for (const rawMeasure of raw.allNotes) {
+  const allMeasures = (raw.allNotes as unknown) as RawMeasure[];
+
+  for (const rawMeasure of allMeasures) {
     if (rawMeasure.section && rawMeasure.section.trim()) {
       if (currentSection) {
         sections.push(currentSection);
@@ -59,7 +81,7 @@ export function normalizeSong(raw: RawSongData): NormalizedSong {
       };
     }
 
-    const chords: Chord[] = (rawMeasure.chords || []).map((c: any) => ({
+    const chords: Chord[] = (rawMeasure.chords || []).map((c) => ({
       symbol: c.Code,
       beats: c.duration,
       tones: c.tones || []
@@ -71,7 +93,7 @@ export function normalizeSong(raw: RawSongData): NormalizedSong {
       barlineBegin: rawMeasure.barline_begin || 'SINGLE',
       barlineEnd: rawMeasure.barline_end || 'SINGLE',
       repetition: rawMeasure.repetition || null,
-      volta: rawMeasure.volta || null,
+      volta: rawMeasure.volta ? String(rawMeasure.volta) : null,
       isCoda: rawMeasure.is_coda || false,
       codaNumber: rawMeasure.coda_number || 0,
       forceLineBreak: rawMeasure.force_line_break || false,

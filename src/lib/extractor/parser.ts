@@ -12,7 +12,7 @@ export interface RawSongData {
   key: string;
   timeSignature: string;
   transposeOptions: TransposeOptionRaw[];
-  allNotes: any[];
+  allNotes: unknown[];
 }
 
 export function parseSongList(html: string): { id: string; title: string }[] {
@@ -62,7 +62,7 @@ export function parseSongPage(html: string, id: string): RawSongData {
   let timeSignature = '4/4';
   $('script[type="application/ld+json"]').each((_, el) => {
     try {
-      const json = JSON.parse($(el).html() || '');
+      const json = JSON.parse($(el).html() || '') as { tempo?: string };
       if (json.tempo) {
         timeSignature = json.tempo;
       }
@@ -70,13 +70,13 @@ export function parseSongPage(html: string, id: string): RawSongData {
   });
 
   // Extract allNotes JSON
-  let allNotes: any[] = [];
+  let allNotes: unknown[] = [];
   const regex = /const\s+allNotes\s*=\s*(\[.*?\]);/s;
   const match = html.match(regex);
   if (match && match[1]) {
     try {
       allNotes = JSON.parse(match[1]);
-    } catch (e) {
+    } catch {
       console.error(`Failed to parse allNotes JSON for id ${id}`);
     }
   }
