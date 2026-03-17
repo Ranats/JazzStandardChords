@@ -1,26 +1,65 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
   }
 }
 
+:root {
+  --background: #fdfdfd;
+  --foreground: #171717;
+}
+
+/* Dark theme via .dark class (controlled by ThemeToggle) */
+.dark {
+  --background: #09090b;
+  --foreground: #ededed;
+}
+
 body {
-  background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--background);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Base override for VexFlow vectors */
+svg.responsive-vexflow {
+  display: block;
+}
+
+/* Force dark mode compatibility inside vexflow ONLY - scope strictly to .vexflow-svg */
+.dark .vexflow-svg path, .dark .vexflow-svg rect, .dark .vexflow-svg text {
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+/* Exception: section label box should remain transparent */
+.dark .vexflow-svg rect.section-label-box {
+  fill: none !important;
+  stroke: currentColor;
+}
+
+.dark .vexflow-svg text {
+  stroke: none;
 }

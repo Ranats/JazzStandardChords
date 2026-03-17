@@ -1,0 +1,826 @@
+{
+  "id": "190",
+  "title": "Stella By Starlight",
+  "composer": "Victor Young",
+  "key": "Bb",
+  "timeSignature": "4/4",
+  "transposeOptions": [
+    {
+      "value": -6,
+      "label": "E"
+    },
+    {
+      "value": -5,
+      "label": "F（F楽器用）"
+    },
+    {
+      "value": -4,
+      "label": "Gb"
+    },
+    {
+      "value": -3,
+      "label": "G（Eb楽器用）"
+    },
+    {
+      "value": -2,
+      "label": "Ab"
+    },
+    {
+      "value": -1,
+      "label": "A"
+    },
+    {
+      "value": 0,
+      "label": "Bb（原曲キー）"
+    },
+    {
+      "value": 1,
+      "label": "B"
+    },
+    {
+      "value": 2,
+      "label": "C（Bb楽器用）"
+    },
+    {
+      "value": 3,
+      "label": "Db"
+    },
+    {
+      "value": 4,
+      "label": "D"
+    },
+    {
+      "value": 5,
+      "label": "Eb（D楽器用）"
+    },
+    {
+      "value": 6,
+      "label": "E"
+    }
+  ],
+  "sections": [
+    {
+      "label": "A",
+      "measures": [
+        {
+          "number": 1,
+          "chords": [
+            {
+              "symbol": "EØ7",
+              "beats": 4,
+              "tones": [
+                "E",
+                "G",
+                "A#",
+                "C#"
+              ]
+            }
+          ],
+          "barlineBegin": "DOUBLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 2,
+          "chords": [
+            {
+              "symbol": "A7b9",
+              "beats": 4,
+              "tones": [
+                "A",
+                "C#",
+                "E",
+                "G",
+                "Bb"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 3,
+          "chords": [
+            {
+              "symbol": "Cm7",
+              "beats": 4,
+              "tones": [
+                "C",
+                "Eb",
+                "G",
+                "Bb"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 4,
+          "chords": [
+            {
+              "symbol": "F7",
+              "beats": 4,
+              "tones": [
+                "F",
+                "A",
+                "C",
+                "Eb"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 5,
+          "chords": [
+            {
+              "symbol": "Fm7",
+              "beats": 4,
+              "tones": [
+                "F",
+                "Ab",
+                "C",
+                "Eb"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 6,
+          "chords": [
+            {
+              "symbol": "Bb7",
+              "beats": 4,
+              "tones": [
+                "Bb",
+                "D",
+                "F",
+                "Ab"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 7,
+          "chords": [
+            {
+              "symbol": "Ebmaj7",
+              "beats": 4,
+              "tones": [
+                "Eb",
+                "G",
+                "Bb",
+                "D"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 8,
+          "chords": [
+            {
+              "symbol": "Ab7",
+              "beats": 4,
+              "tones": [
+                "Ab",
+                "C",
+                "Eb",
+                "Gb"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 9,
+          "chords": [
+            {
+              "symbol": "Bbmaj7",
+              "beats": 4,
+              "tones": [
+                "Bb",
+                "D",
+                "F",
+                "A"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 10,
+          "chords": [
+            {
+              "symbol": "EØ7",
+              "beats": 4,
+              "tones": [
+                "E",
+                "G",
+                "A#",
+                "C#"
+              ]
+            },
+            {
+              "symbol": "A7b9",
+              "beats": 4,
+              "tones": [
+                "A",
+                "C#",
+                "E",
+                "G",
+                "Bb"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 11,
+          "chords": [
+            {
+              "symbol": "Dm7",
+              "beats": 4,
+              "tones": [
+                "D",
+                "F",
+                "A",
+                "C"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 12,
+          "chords": [
+            {
+              "symbol": "Bbm7",
+              "beats": 4,
+              "tones": [
+                "Bb",
+                "Db",
+                "F",
+                "Ab"
+              ]
+            },
+            {
+              "symbol": "Eb7",
+              "beats": 4,
+              "tones": [
+                "Eb",
+                "G",
+                "Bb",
+                "Db"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 13,
+          "chords": [
+            {
+              "symbol": "Fmaj7",
+              "beats": 4,
+              "tones": [
+                "F",
+                "A",
+                "C",
+                "E"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 14,
+          "chords": [
+            {
+              "symbol": "Gm7",
+              "beats": 4,
+              "tones": [
+                "G",
+                "Bb",
+                "D",
+                "F"
+              ]
+            },
+            {
+              "symbol": "C7",
+              "beats": 4,
+              "tones": [
+                "C",
+                "E",
+                "G",
+                "Bb"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 15,
+          "chords": [
+            {
+              "symbol": "AØ7",
+              "beats": 4,
+              "tones": [
+                "A",
+                "C",
+                "D#",
+                "F#"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 16,
+          "chords": [
+            {
+              "symbol": "D7b9",
+              "beats": 4,
+              "tones": [
+                "D",
+                "F#",
+                "A",
+                "C",
+                "Eb"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "DOUBLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        }
+      ]
+    },
+    {
+      "label": "B",
+      "measures": [
+        {
+          "number": 17,
+          "chords": [
+            {
+              "symbol": "G7b13",
+              "beats": 4,
+              "tones": [
+                "G",
+                "B",
+                "D",
+                "F",
+                "A",
+                "Gb"
+              ]
+            }
+          ],
+          "barlineBegin": "DOUBLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 18,
+          "chords": [
+            {
+              "symbol": "G7b13",
+              "beats": 4,
+              "tones": [
+                "G",
+                "B",
+                "D",
+                "F",
+                "A",
+                "Gb"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 19,
+          "chords": [
+            {
+              "symbol": "Cm7",
+              "beats": 4,
+              "tones": [
+                "C",
+                "Eb",
+                "G",
+                "Bb"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 20,
+          "chords": [
+            {
+              "symbol": "Cm7",
+              "beats": 4,
+              "tones": [
+                "C",
+                "Eb",
+                "G",
+                "Bb"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 21,
+          "chords": [
+            {
+              "symbol": "Ab7#11",
+              "beats": 4,
+              "tones": [
+                "Ab",
+                "C",
+                "Eb",
+                "Gb",
+                "Bb",
+                "A"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 22,
+          "chords": [
+            {
+              "symbol": "Ab7#11",
+              "beats": 4,
+              "tones": [
+                "Ab",
+                "C",
+                "Eb",
+                "Gb",
+                "Bb",
+                "A"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 23,
+          "chords": [
+            {
+              "symbol": "Bbmaj7",
+              "beats": 4,
+              "tones": [
+                "Bb",
+                "D",
+                "F",
+                "A"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 24,
+          "chords": [
+            {
+              "symbol": "Bbmaj7",
+              "beats": 4,
+              "tones": [
+                "Bb",
+                "D",
+                "F",
+                "A"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "DOUBLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        }
+      ]
+    },
+    {
+      "label": "C",
+      "measures": [
+        {
+          "number": 25,
+          "chords": [
+            {
+              "symbol": "EØ7",
+              "beats": 4,
+              "tones": [
+                "E",
+                "G",
+                "A#",
+                "C#"
+              ]
+            }
+          ],
+          "barlineBegin": "DOUBLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 26,
+          "chords": [
+            {
+              "symbol": "A7b9",
+              "beats": 4,
+              "tones": [
+                "A",
+                "C#",
+                "E",
+                "G",
+                "Bb"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 27,
+          "chords": [
+            {
+              "symbol": "DØ7",
+              "beats": 4,
+              "tones": [
+                "D",
+                "F",
+                "G#",
+                "B"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 28,
+          "chords": [
+            {
+              "symbol": "G7b9",
+              "beats": 4,
+              "tones": [
+                "G",
+                "B",
+                "D",
+                "F",
+                "Ab"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 29,
+          "chords": [
+            {
+              "symbol": "CØ7",
+              "beats": 4,
+              "tones": [
+                "C",
+                "D#",
+                "F#",
+                "A"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 30,
+          "chords": [
+            {
+              "symbol": "F7b9",
+              "beats": 4,
+              "tones": [
+                "F",
+                "A",
+                "C",
+                "Eb",
+                "Gb"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 31,
+          "chords": [
+            {
+              "symbol": "Bbmaj7",
+              "beats": 4,
+              "tones": [
+                "Bb",
+                "D",
+                "F",
+                "A"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "SINGLE",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        },
+        {
+          "number": 32,
+          "chords": [
+            {
+              "symbol": "Bbmaj7",
+              "beats": 4,
+              "tones": [
+                "Bb",
+                "D",
+                "F",
+                "A"
+              ]
+            }
+          ],
+          "barlineBegin": "SINGLE",
+          "barlineEnd": "FINAL",
+          "repetition": null,
+          "volta": null,
+          "isCoda": false,
+          "codaNumber": 0,
+          "forceLineBreak": false
+        }
+      ]
+    }
+  ]
+}

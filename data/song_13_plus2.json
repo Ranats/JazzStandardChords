@@ -1,0 +1,398 @@
+{
+  "id": "13",
+  "title": "Autumn Leaves",
+  "composer": "Joseph Kosma",
+  "key": "Am",
+  "timeSignature": "4/4",
+  "sections": [
+    {
+      "label": "A",
+      "measures": [
+        {
+          "number": 1,
+          "chords": [
+            {
+              "symbol": "Dm7",
+              "beats": 4,
+              "tones": [
+                "D",
+                "F",
+                "A",
+                "C"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 2,
+          "chords": [
+            {
+              "symbol": "G7",
+              "beats": 4,
+              "tones": [
+                "G",
+                "B",
+                "D",
+                "F"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 3,
+          "chords": [
+            {
+              "symbol": "Cmaj7",
+              "beats": 4,
+              "tones": [
+                "C",
+                "E",
+                "G",
+                "B"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 4,
+          "chords": [
+            {
+              "symbol": "Fmaj7",
+              "beats": 4,
+              "tones": [
+                "F",
+                "A",
+                "C",
+                "E"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 5,
+          "chords": [
+            {
+              "symbol": "BØ7",
+              "beats": 4,
+              "tones": [
+                "B",
+                "D",
+                "F",
+                "Ab"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 6,
+          "chords": [
+            {
+              "symbol": "E7",
+              "beats": 4,
+              "tones": [
+                "E",
+                "Ab",
+                "B",
+                "D"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 7,
+          "chords": [
+            {
+              "symbol": "Am",
+              "beats": 4,
+              "tones": [
+                "A",
+                "C",
+                "E"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 8,
+          "chords": [
+            {
+              "symbol": "Am",
+              "beats": 4,
+              "tones": [
+                "A",
+                "C",
+                "E"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "B",
+      "measures": [
+        {
+          "number": 9,
+          "chords": [
+            {
+              "symbol": "BØ7",
+              "beats": 4,
+              "tones": [
+                "B",
+                "D",
+                "F",
+                "Ab"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 10,
+          "chords": [
+            {
+              "symbol": "E7",
+              "beats": 4,
+              "tones": [
+                "E",
+                "Ab",
+                "B",
+                "D"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 11,
+          "chords": [
+            {
+              "symbol": "Am",
+              "beats": 4,
+              "tones": [
+                "A",
+                "C",
+                "E"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 12,
+          "chords": [
+            {
+              "symbol": "Am",
+              "beats": 4,
+              "tones": [
+                "A",
+                "C",
+                "E"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 13,
+          "chords": [
+            {
+              "symbol": "Dm7",
+              "beats": 4,
+              "tones": [
+                "D",
+                "F",
+                "A",
+                "C"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 14,
+          "chords": [
+            {
+              "symbol": "G7",
+              "beats": 4,
+              "tones": [
+                "G",
+                "B",
+                "D",
+                "F"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 15,
+          "chords": [
+            {
+              "symbol": "Cmaj7",
+              "beats": 4,
+              "tones": [
+                "C",
+                "E",
+                "G",
+                "B"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 16,
+          "chords": [
+            {
+              "symbol": "Fmaj7",
+              "beats": 4,
+              "tones": [
+                "F",
+                "A",
+                "C",
+                "E"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "C",
+      "measures": [
+        {
+          "number": 17,
+          "chords": [
+            {
+              "symbol": "BØ7",
+              "beats": 4,
+              "tones": [
+                "B",
+                "D",
+                "F",
+                "Ab"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 18,
+          "chords": [
+            {
+              "symbol": "E7",
+              "beats": 4,
+              "tones": [
+                "E",
+                "Ab",
+                "B",
+                "D"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 19,
+          "chords": [
+            {
+              "symbol": "Am7",
+              "beats": 4,
+              "tones": [
+                "A",
+                "C",
+                "E",
+                "G"
+              ]
+            },
+            {
+              "symbol": "Ab7",
+              "beats": 4,
+              "tones": [
+                "Ab",
+                "C",
+                "Eb",
+                "F#"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 20,
+          "chords": [
+            {
+              "symbol": "Gm7",
+              "beats": 4,
+              "tones": [
+                "G",
+                "Bb",
+                "D",
+                "F"
+              ]
+            },
+            {
+              "symbol": "F#7",
+              "beats": 4,
+              "tones": [
+                "F#",
+                "Bb",
+                "C#",
+                "E"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 21,
+          "chords": [
+            {
+              "symbol": "F7",
+              "beats": 4,
+              "tones": [
+                "F",
+                "A",
+                "C",
+                "Eb"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 22,
+          "chords": [
+            {
+              "symbol": "E7",
+              "beats": 4,
+              "tones": [
+                "E",
+                "Ab",
+                "B",
+                "D"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 23,
+          "chords": [
+            {
+              "symbol": "Am",
+              "beats": 4,
+              "tones": [
+                "A",
+                "C",
+                "E"
+              ]
+            }
+          ]
+        },
+        {
+          "number": 24,
+          "chords": [
+            {
+              "symbol": "Am",
+              "beats": 4,
+              "tones": [
+                "A",
+                "C",
+                "E"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
