@@ -79,7 +79,7 @@ export default function ScoreBoard({ song, density = 'standard', zoom = 1.0, onZ
         e.touches[0].pageY - e.touches[1].pageY
       );
       const ratio = dist / touchState.current.distance;
-      const newZoom = Math.max(0.5, Math.min(2.0, touchState.current.zoomAtStart * ratio));
+      const newZoom = Math.max(0.5, Math.min(2.5, touchState.current.zoomAtStart * ratio));
       onZoomChange(newZoom);
     }
   }, [onZoomChange]);
@@ -89,20 +89,27 @@ export default function ScoreBoard({ song, density = 'standard', zoom = 1.0, onZ
     const div = containerRef.current;
     div.innerHTML = '';
 
-    // RESPONSIVE ZOOM LOGIC:
-    // Scale the context by zoom, but keep the SVG width fixed to containerWidth.
-    // This means the logical width used for calculations must be containerWidth / zoom.
+    // Logic for measures per line: Reduce when logical width is tight
     const logicalWidth = containerWidth / zoom;
-    const isMobile = containerWidth < 600;
-    let paddingX = 10;
-    if (density === 'compact') paddingX = 2;
-    else if (density === 'large') paddingX = 20;
+    let measuresPerLine = 4;
+    // Base minimum width for a measure to look decent (including margins)
+    const idealMeasureWidth = 200; 
 
-    const measuresPerLine = 4;
+    if (logicalWidth < 400) measuresPerLine = 1;
+    else if (logicalWidth < 700) measuresPerLine = 2;
+    else measuresPerLine = 4;
+
+    const isMobile = containerWidth < 600;
+    let paddingX = measuresPerLine === 1 ? 20 : 10;
+    if (density === 'compact') paddingX = 2;
+    else if (density === 'large' && measuresPerLine > 1) paddingX = 20;
+
     const measureWidth = (logicalWidth - paddingX * 2) / measuresPerLine;
-    // Base height (unscaled)
     const baseMeasureHeight = isMobile ? 150 : 170;
     
+    // Scale chord font size: larger when fewer measures per line
+    const chordFontSize = measuresPerLine === 1 ? 18 : (measuresPerLine === 2 ? 15 : 13);
+
     // Flatten measures
     const allMeasures: any[] = [];
     song.sections.forEach(sec => {
@@ -120,13 +127,10 @@ export default function ScoreBoard({ song, density = 'standard', zoom = 1.0, onZ
     const logicalTotalHeight = (baseMeasureHeight * lines) + 140; 
 
     const renderer = new Renderer(div, Renderer.Backends.SVG);
-    // SVG physical dimensions: ALWAYS 100% width, height scaled by zoom
     renderer.resize(containerWidth, logicalTotalHeight * zoom);
     const context = renderer.getContext();
     context.setFillStyle('currentColor');
     context.setStrokeStyle('currentColor');
-    
-    // Scale EVERYTHING from the start
     context.scale(zoom, zoom);
 
     let currentX = paddingX;
@@ -149,7 +153,11 @@ export default function ScoreBoard({ song, density = 'standard', zoom = 1.0, onZ
 
       const stave = new Stave(currentX, currentY, measureWidth);
       if (isFirst) {
+        // Reduced glyph scale for clef/timeSig isn't directly exposed easily,
+        // but adding more padding for the first measure helps the first chord.
         stave.addClef('treble').addTimeSignature(song.timeSignature || '4/4');
+        // Add internal padding to first measure to avoid overlap with clef
+        stave.setNoteStartX(stave.getNoteStartX() + 15);
       }
 
       switch (measure.barlineBegin) {
@@ -190,7 +198,7 @@ export default function ScoreBoard({ song, density = 'standard', zoom = 1.0, onZ
       const lPadX = 8;
       const lPadY = 5;
       const lx = currentX + 5;
-      const ly = stave.getYForTopText(4); 
+      const ly = stave.getYForTopText(0); // Lowered to be closer to staff
       
       if (measure.label) {
         context.save();
@@ -198,23 +206,23 @@ export default function ScoreBoard({ song, density = 'standard', zoom = 1.0, onZ
         const boxW = lSize + lPadX * 2;
         const boxH = lSize + lPadY * 2;
         const boxX = lx - lPadX;
-        const boxY = ly - lSize - lPadY;
+        const boxY = ly - lSize - lPadY - 5; // Slight offset for label
         
-        // Draw box using VexFlow context so it scales correctly
         context.beginPath();
         context.setLineWidth(1.2);
         context.rect(boxX, boxY, boxW, boxH);
         context.stroke();
         
         context.setFont('Arial', lSize, 'bold');
-        context.fillText(labelText, lx, ly - lPadY + 1);
+        context.fillText(labelText, lx, ly - lPadY - 4);
         context.restore();
       }
 
+      // Measure number: placed directly above the staff
       context.save();
       context.setFont('Arial', 10, 'normal');
       context.setFillStyle('#888888');
-      context.fillText(String(measure.number), currentX + 3, ly + 2);
+      context.fillText(String(measure.number), currentX + 3, stave.getYForTopText(0) + 2);
       context.restore();
 
       const notesToDraw: any[] = [];
@@ -229,7 +237,7 @@ export default function ScoreBoard({ song, density = 'standard', zoom = 1.0, onZ
           if (tone.includes('#')) staveNote.addModifier(new Accidental('#'), idx);
           else if (tone.length > 1 && tone.includes('b') && tone !== 'B') staveNote.addModifier(new Accidental('b'), idx);
         });
-        staveNote.addModifier(new Annotation(chord.symbol).setFont('Arial', isMobile ? 12 : 14, 'bold').setVerticalJustification(Annotation.VerticalJustify.BOTTOM), 0);
+        staveNote.addModifier(new Annotation(chord.symbol).setFont('Arial', chordFontSize, 'bold').setVerticalJustification(Annotation.VerticalJustify.BOTTOM), 0);
         notesToDraw.push(staveNote);
       });
 
