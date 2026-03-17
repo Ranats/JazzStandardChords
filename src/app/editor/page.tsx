@@ -137,7 +137,7 @@ export default function ScoreEditor() {
 
   return (
     <div className="min-h-screen bg-zinc-50 dark:bg-zinc-950 p-4 sm:p-8 font-sans pb-32">
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-6xl mx-auto">
         <header className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
           <div className="flex items-center gap-4">
             <Link 
@@ -169,7 +169,7 @@ export default function ScoreEditor() {
             .print\\:hidden { display: none !important; }
             body { background: white !important; }
             .score-print-only { display: block !important; margin: 0 auto; width: 100% !important; }
-            .max-w-5xl { max-width: 100% !important; padding: 0 !important; }
+            .max-w-6xl { max-width: 100% !important; padding: 0 !important; }
             .lg\\:grid-cols-3 { grid-template-columns: 1fr !important; }
             .shadow-sm, .shadow-2xl { shadow: none !important; border: none !important; }
           }
@@ -178,7 +178,8 @@ export default function ScoreEditor() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative">
           {/* Controls Panel */}
           {!isFullPreview && (
-            <div className="lg:col-span-1 space-y-6 print:hidden">
+            <div className="lg:col-span-1 space-y-6 print:hidden order-last lg:order-first">
+            {/* Basic Info */}
             <section className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm">
               <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-wider mb-4">基本情報</h2>
               <div className="space-y-4">
@@ -215,6 +216,7 @@ export default function ScoreEditor() {
               </div>
             </section>
 
+            {/* Measure List */}
             <section className="bg-white dark:bg-zinc-900 rounded-3xl p-6 border border-zinc-200 dark:border-zinc-800 shadow-sm max-h-[60vh] overflow-y-auto">
               <div className="flex items-center justify-between mb-4 sticky top-0 bg-white dark:bg-zinc-900 pb-2 z-10">
                 <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-wider">小節リスト</h2>
@@ -302,8 +304,8 @@ export default function ScoreEditor() {
           )}
 
           {/* Preview Panel */}
-          <div className={`${isFullPreview ? 'lg:col-span-3' : 'lg:col-span-2'} space-y-6 transition-all duration-300`}>
-            <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm h-auto score-print-only relative group">
+          <div className={`${isFullPreview ? 'lg:col-span-3' : 'lg:col-span-2'} space-y-6 transition-all duration-300 order-first lg:order-last`}>
+            <div className="bg-white dark:bg-zinc-900 rounded-3xl p-6 sm:p-8 border border-zinc-200 dark:border-zinc-800 shadow-sm h-auto score-print-only relative group min-h-[400px]">
               <div className="flex items-center justify-between mb-8 print:hidden">
                 <h2 className="text-sm font-bold text-zinc-400 uppercase tracking-wider">Preview</h2>
                 <div className="flex gap-2">
@@ -323,10 +325,10 @@ export default function ScoreEditor() {
                 <p className="text-sm text-zinc-500 dark:text-zinc-400">{composer} • Key: {key}</p>
               </div>
 
-              <div className="overflow-x-auto pb-4">
+              <div className="w-full">
                 <ScoreBoard 
                   song={songPreview}
-                  zoom={1.2} 
+                  zoom={1.1} 
                   density="standard"
                 />
               </div>

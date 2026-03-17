@@ -163,7 +163,7 @@ export default function SongViewer({ initialSong }: { initialSong: NormalizedSon
       {/* Score Area */}
       <div className="flex-1 overflow-y-auto mb-10 sm:max-w-7xl sm:mx-auto w-full sm:px-6">
         <div className="bg-white dark:bg-zinc-900 sm:rounded-2xl sm:border border-zinc-200 dark:border-zinc-800 shadow-sm p-2 sm:p-6 min-h-[500px] mb-6">
-          <ScoreBoard song={song} density={density} zoom={zoom} />
+          <ScoreBoard song={song} density={density} zoom={zoom} onZoomChange={setZoom} />
         </div>
 
         {/* Backing Track Section (YouTube Search Embed) */}

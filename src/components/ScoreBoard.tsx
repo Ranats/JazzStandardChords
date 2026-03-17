@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { NormalizedSong } from '@/lib/extractor/normalizer';
 import { Renderer, Stave, StaveNote, Formatter, Annotation, Accidental, Barline, Repetition, Volta } from 'vexflow';
 
@@ -10,9 +10,9 @@ interface ScoreBoardProps {
   song: NormalizedSong;
   density?: Density;
   zoom?: number;
+  onZoomChange?: (newZoom: number) => void;
 }
 
-// Map note name to MIDI-like pitch number for octave assignment
 const NOTE_TO_PITCH: Record<string, number> = {
   'C': 0, 'C#': 1, 'Db': 1, 'D': 2, 'D#': 3, 'Eb': 3,
   'E': 4, 'Fb': 4, 'E#': 5, 'F': 5, 'F#': 6, 'Gb': 6,
@@ -20,13 +20,8 @@ const NOTE_TO_PITCH: Record<string, number> = {
   'B': 11, 'Cb': 11, 'B#': 0
 };
 
-/**
- * Build VexFlow keys ensuring root-position voicing:
- * First tone is lowest, each subsequent tone is placed higher.
- */
 function buildKeys(tones: string[]): string[] {
   if (tones.length === 0) return [];
-  
   const BASE_OCTAVE = 4;
   const keys: string[] = [];
   let currentOctave = BASE_OCTAVE;
@@ -39,14 +34,10 @@ function buildKeys(tones: string[]): string[] {
       keys.push(`${tone.toLowerCase()}/4`);
       continue;
     }
-
     if (i === 0) {
       currentOctave = BASE_OCTAVE;
-    } else {
-      // If current pitch <= previous, bump octave
-      if (pitch <= prevPitch) {
-        currentOctave++;
-      }
+    } else if (pitch <= prevPitch) {
+      currentOctave++;
     }
     prevPitch = pitch;
     keys.push(`${tone.toLowerCase()}/` + currentOctave);
@@ -54,9 +45,10 @@ function buildKeys(tones: string[]): string[] {
   return keys;
 }
 
-export default function ScoreBoard({ song, density = 'standard', zoom = 1.0 }: ScoreBoardProps) {
+export default function ScoreBoard({ song, density = 'standard', zoom = 1.0, onZoomChange }: ScoreBoardProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState<number>(0);
+  const touchState = useRef<{ distance: number; zoomAtStart: number }>({ distance: 0, zoomAtStart: 1.0 });
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -68,60 +60,81 @@ export default function ScoreBoard({ song, density = 'standard', zoom = 1.0 }: S
     return () => observer.disconnect();
   }, []);
 
+  // Pinch-to-zoom logic
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      const dist = Math.hypot(
+        e.touches[0].pageX - e.touches[1].pageX,
+        e.touches[0].pageY - e.touches[1].pageY
+      );
+      touchState.current = { distance: dist, zoomAtStart: zoom };
+    }
+  }, [zoom]);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length === 2 && onZoomChange) {
+      e.preventDefault();
+      const dist = Math.hypot(
+        e.touches[0].pageX - e.touches[1].pageX,
+        e.touches[0].pageY - e.touches[1].pageY
+      );
+      const ratio = dist / touchState.current.distance;
+      const newZoom = Math.max(0.5, Math.min(2.0, touchState.current.zoomAtStart * ratio));
+      onZoomChange(newZoom);
+    }
+  }, [onZoomChange]);
+
   useEffect(() => {
     if (!containerRef.current || containerWidth === 0) return;
     const div = containerRef.current;
     div.innerHTML = '';
 
+    // RESPONSIVE ZOOM LOGIC:
+    // Scale the context by zoom, but keep the SVG width fixed to containerWidth.
+    // This means the logical width used for calculations must be containerWidth / zoom.
+    const logicalWidth = containerWidth / zoom;
     const isMobile = containerWidth < 600;
     let paddingX = 10;
     if (density === 'compact') paddingX = 2;
     else if (density === 'large') paddingX = 20;
 
     const measuresPerLine = 4;
-    // Ensure a minimum width per measure to avoid chord overlap
-    const minMeasureWidth = 200;
-    const measureWidth = Math.max(minMeasureWidth, (containerWidth - paddingX * 2) / measuresPerLine);
-    const measureHeight = isMobile ? 150 * zoom : 170 * zoom;
-
-    // Flatten measures preserving metadata
+    const measureWidth = (logicalWidth - paddingX * 2) / measuresPerLine;
+    // Base height (unscaled)
+    const baseMeasureHeight = isMobile ? 150 : 170;
+    
+    // Flatten measures
     const allMeasures: any[] = [];
     song.sections.forEach(sec => {
       sec.measures.forEach((m, idx) => {
-        allMeasures.push({
-          ...m,
-          label: idx === 0 ? sec.label : null
-        });
+        allMeasures.push({ ...m, label: idx === 0 ? sec.label : null });
       });
     });
 
-    // Calculate extra lines for coda/force_line_break
     let extraLines = 0;
     allMeasures.forEach((m, i) => {
-      if (i > 0 && (m.forceLineBreak || (m.isCoda && m.codaNumber >= 2))) {
-        extraLines++;
-      }
+      if (i > 0 && (m.forceLineBreak || (m.isCoda && m.codaNumber >= 2))) extraLines++;
     });
 
     const lines = Math.ceil(allMeasures.length / measuresPerLine) + extraLines;
-    const totalHeight = (measureHeight * lines) + 140 * zoom; 
+    const logicalTotalHeight = (baseMeasureHeight * lines) + 140; 
 
     const renderer = new Renderer(div, Renderer.Backends.SVG);
-    const svgWidth = (measureWidth * measuresPerLine + paddingX * 2) * zoom;
-    renderer.resize(svgWidth, totalHeight);
+    // SVG physical dimensions: ALWAYS 100% width, height scaled by zoom
+    renderer.resize(containerWidth, logicalTotalHeight * zoom);
     const context = renderer.getContext();
     context.setFillStyle('currentColor');
     context.setStrokeStyle('currentColor');
+    
+    // Scale EVERYTHING from the start
     context.scale(zoom, zoom);
 
     let currentX = paddingX;
-    let currentY = 140; // Top space: section-label box (~25px) + measure-number (~15px) + volta + staff
+    let currentY = 120;
     let measuresOnThisLine = 0;
 
     allMeasures.forEach((measure, i) => {
       const isFirst = (i === 0);
-
-      // Line break logic
       const shouldBreak = !isFirst && (
         (measure.isCoda && measure.codaNumber >= 2) ||
         measure.forceLineBreak ||
@@ -130,21 +143,15 @@ export default function ScoreBoard({ song, density = 'standard', zoom = 1.0 }: S
 
       if (shouldBreak) {
         currentX = paddingX;
-        currentY += measureHeight;
+        currentY += baseMeasureHeight;
         measuresOnThisLine = 0;
       }
 
       const stave = new Stave(currentX, currentY, measureWidth);
-
-      // Clef & time sig on first measure only
       if (isFirst) {
         stave.addClef('treble').addTimeSignature(song.timeSignature || '4/4');
       }
 
-      // Section label — drawn manually ABOVE the staff (after stave is positioned)
-      // We draw this after stave.draw() so we can use raw context coords
-
-      // ===== Barlines from data =====
       switch (measure.barlineBegin) {
         case 'REPEAT_BEGIN': stave.setBegBarType(Barline.type.REPEAT_BEGIN); break;
         case 'DOUBLE': stave.setBegBarType(Barline.type.DOUBLE); break;
@@ -158,163 +165,92 @@ export default function ScoreBoard({ song, density = 'standard', zoom = 1.0 }: S
         default: stave.setEndBarType(Barline.type.SINGLE); break;
       }
 
-      // ===== Repetition signs (D.C., D.S., Coda, Segno, Fine) =====
       const repTypeMap: Record<string, number> = {
-        'CODA_LEFT': Repetition.type.CODA_LEFT,
-        'CODA_RIGHT': Repetition.type.CODA_RIGHT,
-        'SEGNO_LEFT': Repetition.type.SEGNO_LEFT,
-        'SEGNO_RIGHT': Repetition.type.SEGNO_RIGHT,
-        'DC': Repetition.type.DC,
-        'DS': Repetition.type.DS,
-        'FINE': Repetition.type.FINE,
-        'DC_AL_CODA': Repetition.type.DC_AL_CODA,
-        'DS_AL_CODA': Repetition.type.DS_AL_CODA,
+        'CODA_LEFT': Repetition.type.CODA_LEFT, 'CODA_RIGHT': Repetition.type.CODA_RIGHT,
+        'SEGNO_LEFT': Repetition.type.SEGNO_LEFT, 'SEGNO_RIGHT': Repetition.type.SEGNO_RIGHT,
+        'DC': Repetition.type.DC, 'DS': Repetition.type.DS, 'FINE': Repetition.type.FINE,
+        'DC_AL_CODA': Repetition.type.DC_AL_CODA, 'DS_AL_CODA': Repetition.type.DS_AL_CODA,
       };
       if (measure.repetition && repTypeMap[measure.repetition] !== undefined) {
         stave.setRepetitionType(repTypeMap[measure.repetition], 0);
       }
 
-      // ===== Volta brackets (1st/2nd endings) =====
       if (measure.volta) {
         const voltaNum = Number(measure.volta);
-        const nextMeasure = allMeasures[i + 1];
-        const nextVolta = nextMeasure?.volta ? Number(nextMeasure.volta) : 0;
-        
-        let voltaType: number;
-        if (nextVolta === voltaNum) {
-          // More measures in this volta
-          const prevMeasure = i > 0 ? allMeasures[i - 1] : null;
-          const prevVolta = prevMeasure?.volta ? Number(prevMeasure.volta) : 0;
-          voltaType = prevVolta === voltaNum ? Volta.type.MID : Volta.type.BEGIN;
-        } else {
-          // Last measure of this volta bracket — use MID or BEGIN to avoid right vertical bar
-          const prevMeasure = i > 0 ? allMeasures[i - 1] : null;
-          const prevVolta = prevMeasure?.volta ? Number(prevMeasure.volta) : 0;
-          voltaType = prevVolta === voltaNum ? Volta.type.MID : Volta.type.BEGIN;
-        }
-        // yShift=0 places Volta at VexFlow's default position: directly above the top staff line
-        // This is the correct position (above the staff, not inside it)
+        const nextVolta = allMeasures[i + 1]?.volta ? Number(allMeasures[i + 1].volta) : 0;
+        const prevVolta = i > 0 ? Number(allMeasures[i - 1]?.volta || 0) : 0;
+        const voltaType = nextVolta === voltaNum ? (prevVolta === voltaNum ? Volta.type.MID : Volta.type.BEGIN) : (prevVolta === voltaNum ? Volta.type.MID : Volta.type.BEGIN);
         stave.setVoltaType(voltaType, `${voltaNum}.`, 0);
       }
 
       stave.setContext(context).draw();
 
-      // ===== Section label + measure number — draw after staff =====
-      // Calculate label box geometry first so measure number can be placed below it
+      // Section Label & Measure Number
       const lSize = 13;
       const lPadX = 8;
       const lPadY = 5;
       const lx = currentX + 5;
-      const ly = stave.getYForTopText(4); // Highest position
-      const boxH = lSize + lPadY * 2;
-      const labelBottomY = (ly - lSize - lPadY + boxH) * zoom; // SVG bottom edge of box
-
+      const ly = stave.getYForTopText(4); 
+      
       if (measure.label) {
-        const labelText = String(measure.label);
-        // Draw the box border by appending an SVG rect directly to the SVG root
-        const svgEl = div.querySelector('svg');
-        if (svgEl) {
-          const boxW = lSize + lPadX * 2;
-          const boxX = lx - lPadX;
-          const boxY = ly - lSize - lPadY;
-          const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-          rect.setAttribute('x', String(boxX * zoom));
-          rect.setAttribute('y', String(boxY * zoom));
-          rect.setAttribute('width', String(boxW * zoom));
-          rect.setAttribute('height', String(boxH * zoom));
-          rect.setAttribute('fill', 'none');
-          rect.setAttribute('stroke', 'currentColor');
-          rect.setAttribute('stroke-width', '1.2');
-          rect.setAttribute('class', 'section-label-box');
-          svgEl.appendChild(rect);
-        }
-        // Draw label text
         context.save();
+        const labelText = String(measure.label);
+        const boxW = lSize + lPadX * 2;
+        const boxH = lSize + lPadY * 2;
+        const boxX = lx - lPadX;
+        const boxY = ly - lSize - lPadY;
+        
+        // Draw box using VexFlow context so it scales correctly
+        context.beginPath();
+        context.setLineWidth(1.2);
+        context.rect(boxX, boxY, boxW, boxH);
+        context.stroke();
+        
         context.setFont('Arial', lSize, 'bold');
-        context.setFillStyle('currentColor');
         context.fillText(labelText, lx, ly - lPadY + 1);
         context.restore();
       }
 
-      // ===== Measure number — placed below label box with 6px margin =====
       context.save();
       context.setFont('Arial', 10, 'normal');
       context.setFillStyle('#888888');
-      // Y in unscaled coords: labelBottomY is in SVG px, divide by zoom for VexFlow coords
-      const mnUnscaledY = (labelBottomY / zoom) + 6 + 10; // box bottom + 6px gap + font size
-      context.fillText(String(measure.number), currentX + 3, mnUnscaledY);
+      context.fillText(String(measure.number), currentX + 3, ly + 2);
       context.restore();
 
-      // ===== Build notes =====
       const notesToDraw: any[] = [];
       measure.chords.forEach((chord: any) => {
         const keys = buildKeys(chord.tones);
-
         if (keys.length === 0) {
-          const rest = new StaveNote({
-            keys: ['b/4'],
-            duration: chord.beats === 4 ? 'wr' : (chord.beats === 2 ? 'hr' : 'qr')
-          });
-          notesToDraw.push(rest);
+          notesToDraw.push(new StaveNote({ keys: ['b/4'], duration: chord.beats === 4 ? 'wr' : (chord.beats === 2 ? 'hr' : 'qr') }));
           return;
         }
-
-        const staveNote = new StaveNote({
-          keys,
-          duration: chord.beats === 4 ? 'w' : (chord.beats === 2 ? 'h' : 'q')
-        });
-
-        // Add accidentals
+        const staveNote = new StaveNote({ keys, duration: chord.beats === 4 ? 'w' : (chord.beats === 2 ? 'h' : 'q') });
         chord.tones.forEach((tone: string, idx: number) => {
-          if (tone.includes('#')) {
-            staveNote.addModifier(new Accidental('#'), idx);
-          } else if (tone.includes('b') && tone !== 'B') {
-            // Avoid marking 'B' as a flat accidentally
-            const hasFlat = tone.length > 1 && tone.includes('b');
-            if (hasFlat) staveNote.addModifier(new Accidental('b'), idx);
-          }
+          if (tone.includes('#')) staveNote.addModifier(new Accidental('#'), idx);
+          else if (tone.length > 1 && tone.includes('b') && tone !== 'B') staveNote.addModifier(new Accidental('b'), idx);
         });
-
-        // ===== Chord symbol BELOW the staff =====
-        staveNote.addModifier(
-          new Annotation(chord.symbol)
-            .setFont('Arial', isMobile ? 12 : 14, 'bold')
-            .setVerticalJustification(Annotation.VerticalJustify.BOTTOM),
-          0
-        );
-
+        staveNote.addModifier(new Annotation(chord.symbol).setFont('Arial', isMobile ? 12 : 14, 'bold').setVerticalJustification(Annotation.VerticalJustify.BOTTOM), 0);
         notesToDraw.push(staveNote);
       });
 
-      if (notesToDraw.length > 0) {
-        Formatter.FormatAndDraw(context, stave, notesToDraw);
-      }
+      if (notesToDraw.length > 0) Formatter.FormatAndDraw(context, stave, notesToDraw);
 
       currentX += measureWidth;
       measuresOnThisLine++;
     });
 
-    // SVG responsive
     const svg = div.querySelector('svg');
     if (svg) {
-      if (zoom === 1.0) {
-        svg.style.width = '100%';
-        svg.style.height = 'auto';
-      } else {
-        svg.style.width = `${containerWidth * zoom}px`;
-        svg.style.height = 'auto';
-        div.style.overflowX = 'auto';
-      }
+      svg.style.width = '100%';
+      svg.style.height = 'auto';
+      svg.style.display = 'block';
       svg.style.color = 'var(--foreground)';
     }
   }, [song, containerWidth, density, zoom]);
 
   return (
-    <div className="w-full relative">
-      <div
-        ref={containerRef}
-        className="vexflow-svg w-full text-zinc-900 dark:text-zinc-100 overflow-x-auto overflow-y-hidden"
-      />
+    <div className="w-full relative touch-none" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove}>
+      <div ref={containerRef} className="vexflow-svg w-full text-zinc-900 dark:text-zinc-100 overflow-hidden" />
     </div>
   );
 }
