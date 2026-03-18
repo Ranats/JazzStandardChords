@@ -211,12 +211,15 @@ export default function ScoreBoard({ song, density = 'standard', zoom = 1.0, onZ
         const boxX = lx - lPadX;
         const boxY = lyLabel - lSize - lPadY - 5;
         
-        context.beginPath();
+        context.save();
+        const isDark = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
+        const bgColor = isDark ? '#09090b' : '#fafafa'; // Match zinc-950 and zinc-50
+        
         context.setLineWidth(1.2);
         context.setStrokeStyle('currentColor');
-        context.setFillStyle('transparent'); // Ensure no fill
+        context.setFillStyle(bgColor);
         context.rect(boxX, boxY, boxW, boxH);
-        context.stroke();
+        context.restore();
         
         context.setFont('Arial', lSize, 'bold');
         context.fillText(labelText, lx, lyLabel - lPadY - 4);
