@@ -204,23 +204,25 @@ export default function ScoreBoard({ song, density = 'standard', zoom = 1.0, onZ
       const lyMeasure = stave.getYForTopText(0) + 2;
       
       if (measure.label) {
-        context.save();
         const labelText = String(measure.label);
         const boxW = lSize + lPadX * 2;
         const boxH = lSize + lPadY * 2;
         const boxX = lx - lPadX;
         const boxY = lyLabel - lSize - lPadY - 5;
-        
+
         context.save();
         const isDark = typeof document !== 'undefined' && document.documentElement.classList.contains('dark');
-        const bgColor = isDark ? '#09090b' : '#fafafa'; // Match zinc-950 and zinc-50
+        const bgColor = isDark ? '#09090b' : '#fafafa'; // zinc-950 and zinc-50
         
+        context.beginPath();
         context.setLineWidth(1.2);
         context.setStrokeStyle('currentColor');
         context.setFillStyle(bgColor);
         context.rect(boxX, boxY, boxW, boxH);
-        context.restore();
+        context.fill();
+        context.stroke();
         
+        context.setFillStyle('currentColor');
         context.setFont('Arial', lSize, 'bold');
         context.fillText(labelText, lx, lyLabel - lPadY - 4);
         context.restore();
